@@ -1,6 +1,6 @@
 <?php
 
-require_once('lib.php');
+require_once($CFG->dirroot . '/blocks/backadel/lib.php');
 
 class block_backadel extends block_list {
 
