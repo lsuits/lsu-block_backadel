@@ -24,7 +24,7 @@ $PAGE->set_title($blockname);
 $PAGE->set_heading($SITE->shortname . ': ' . $blockname);
 $PAGE->set_url('/blocks/backadel/index.php');
 
-$PAGE->requires->js('/lib/jquery.js');
+$PAGE->requires->js('/blocks/backadel/js/jquery.js');
 $PAGE->requires->js('/blocks/backadel/js/index.js');
 
 echo $OUTPUT->header();
