@@ -27,6 +27,9 @@ $PAGE->set_title($blockname);
 $PAGE->set_heading($SITE->shortname . ': ' . $blockname);
 $PAGE->set_url('/blocks/backadel/results.php');
 
+$PAGE->requires->js('/blocks/backadel/js/jquery.js');
+$PAGE->requires->js('/blocks/backadel/js/toggle.js');
+
 echo $OUTPUT->header();
 echo $OUTPUT->heading($header);
 
@@ -114,6 +117,7 @@ foreach ($results as $r) {
 
 echo '<form action = "backup.php" method = "POST">';
 echo html_writer::table($table);
+echo html_writer::link('#', $_s('toggle_all'), array('class' => 'toggle_link'));
 echo '    <input type = "submit" value = "' . $_s('backup_button') . '"/>';
 echo '</form>';
 
