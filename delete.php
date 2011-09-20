@@ -26,6 +26,9 @@ $PAGE->set_title($blockname);
 $PAGE->set_heading($SITE->shortname . ': ' . $blockname);
 $PAGE->set_url('/blocks/backadel/delete.php');
 
+$PAGE->requires->js('/blocks/backadel/js/jquery.js');
+$PAGE->requires->js('/blocks/backadel/js/toggle.js');
+
 echo $OUTPUT->header();
 echo $OUTPUT->heading($header);
 
@@ -86,6 +89,7 @@ foreach ($courses as $c) {
 
 echo '<form action = "delete.php" method = "POST">';
 echo html_writer::table($table);
+echo html_writer::link('#', $_s('toggle_all'), array('class' => 'toggle_link'));
 echo '    <input type = "submit" value = "' . $_s('delete_button') . '"/>';
 echo '</form>';
 
