@@ -29,8 +29,12 @@ background-color: #ffffff;
 border: 1px solid #999999;
 }
 
-.path-blocks-backadel form input[type="submit"] {
-margin: 5px 44%; 
+#page-blocks-backadel-results.path-blocks-backadel form input[type="submit"] {
+display: block;
+float: right;
+margin: 0 10px 10px 0; 
+padding: 3px 10px;
+font-size: 13px;
 }
 
 .path-blocks-backadel .name_label {
@@ -282,3 +286,27 @@ div.backadel_table {
   -moz-box-shadow: 0 0 10px #ccc;
   -webkit-box-shadow: 0 0 10px #ccc;
 }
+
+.path-blocks-backadel a.backadel.toggle_link {
+   display: inline-block;
+   background: #eeeeee url([[pix:theme|input_button]]) 0 -142px repeat-x;
+   padding: 2px 10px;
+   border: 1px solid #461d7c;
+   color: #2e1352;
+   cursor: pointer;
+   border-radius: 3px;
+   -moz-border-radius: 3px;
+   -webkit-border-radius: 3px;
+   -webkit-appearance: none;
+   -moz-appearance: none;
+   margin: 0 0 10px 10px; 
+}
+
+.path-blocks-backadel a.backadel.toggle_link:hover {
+   background-color: #461d7c;
+   background-position: 0 -50px;
+   color: #ffffff;
+   cursor: pointer;
+   text-decoration: none;
+}
+
