@@ -87,7 +87,8 @@ function backadel_backup_course($course) {
         return false;
     }
 
-    $params = array('component' => 'backup', 'filearea' => 'automated');
+    $params = array('component' => 'backup', 'filearea' => 'automated',
+        'mimetype' => 'application/vnd.moodle.backup');
 
     $old_file = reset($DB->get_records('files', $params, 'id DESC', '*', 0, 1));
     $old_fileid = $old_file->id;
