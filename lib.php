@@ -75,41 +75,49 @@ function generate_suffix($courseid) {
 }
 
 function backadel_backup_course($course) {
-    global $CFG, $DB;
+    global $CFG;
 
     require_once($CFG->dirroot . '/backup/util/includes/backup_includes.php');
     require_once($CFG->dirroot . '/backup/controller/backup_controller.class.php');
-    require_once($CFG->dirroot . '/backup/util/helper/backup_cron_helper.class.php');
 
-    $time = time();
+    // $config = get_config('backup');
 
-    if (!backup_cron_automated_helper::launch_automated_backup($course, $time, 2)) {
-        return false;
+    $bc = new backup_controller(backup::TYPE_1COURSE, $course->id,
+        backup::FORMAT_MOODLE, backup::INTERACTIVE_NO, backup::MODE_AUTOMATED, 2);
+
+    /*
+    $settings = array(
+        'users' => 'backup_auto_users',
+        'role_assignments' => 'backup_auto_users',
+        'user_files' => 'backup_auto_user_files',
+        'activities' => 'backup_auto_activities',
+        'blocks' => 'backup_auto_blocks',
+        'filters' => 'backup_auto_filters',
+        'comments' => 'backup_auto_comments',
+        'completion_information' => 'backup_auto_userscompletion',
+        'logs' => 'backup_auto_logs',
+        'histories' => 'backup_auto_histories'
+    );
+
+    foreach ($settings as $setting => $configsetting) {
+        if ($bc->get_plan()->setting_exists($setting)) {
+            $bc->get_plan()->get_setting($setting)->set_value($config->{$configsetting});
+        }
     }
+     */
 
-    $params = array('component' => 'backup', 'filearea' => 'automated',
-        'mimetype' => 'application/vnd.moodle.backup');
+    $outcome = $bc->execute_plan();
 
-    $old_file = reset($DB->get_records('files', $params, 'id DESC', '*', 0, 1));
-    $old_fileid = $old_file->id;
+    $results = $bc->get_results();
 
-    $suffix = generate_suffix($course->id);
-    $filename = "backadel-$time-$course->shortname-$suffix.mbz";
+    $file = $results['backup_destination'];
 
-    $new_file = new stdClass();
-    $new_file->component = 'backadel';
-    $new_file->filearea = 'backups';
-    $new_file->contextid = get_context_instance(CONTEXT_SYSTEM)->id;
-    $new_file->filename = $filename;
+    $backadel_path = get_config('block_backadel', 'path');
 
-    $fs = get_file_storage();
+    $file->copy_content_to($CFG->dataroot . $backadel_path . 'bd2.mbz');
 
-    if (!$fs->create_file_from_storedfile($new_file, $old_fileid)) {
-        die();
-    }
-
-    $stored_file = $fs->get_file_instance($old_file);
-    $stored_file->delete();
+    $bc->destroy();
+    unset($bc);
 
     return true;
 }

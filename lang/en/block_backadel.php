@@ -79,7 +79,8 @@ $string['statuses_updated'] = 'Selected courses have been rescheduled for backup
 
 // Strings for settings.php
 $string['config_path'] = 'Storage Path';
-$string['config_path_desc'] = 'Relative to {$a}';
+$string['config_path_desc'] = 'Relative to {$a}, include the surrounding slashes.
+    Ensure that this directory is created and writable.';
 $string['config_pattern'] = 'Archive suffix';
 $string['config_pattern_desc'] = 'Data that will be appended onto backup names';
 $string['config_roles'] = 'Roles';

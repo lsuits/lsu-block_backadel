@@ -19,7 +19,7 @@ class block_backadel extends block_list {
             return get_string($key, 'block_backadel', $a);
         };
 
-        $running = get_config('block/backadel', 'running');
+        $running = get_config('block_backadel', 'running');
 
         if ($running) {
             $minutes_run = round((time() - $running) / 60);
@@ -35,7 +35,7 @@ class block_backadel extends block_list {
         $error = false;
         $error_log = '';
 
-        set_config('running', time(), 'block/backadel');
+        set_config('running', time(), 'block_backadel');
 
         foreach ($backups as $b) {
             $course = $DB->get_record('course', array('id' => $b->coursesid));
@@ -51,7 +51,7 @@ class block_backadel extends block_list {
             $DB->update_record('block_backadel_statuses', $b);
         }
 
-        set_config('running', '', 'block/backadel');
+        set_config('running', '', 'block_backadel');
 
         backadel_email_admins($error_log);
 
@@ -78,7 +78,7 @@ class block_backadel extends block_list {
         $num_pending = $DB->count_records_select($table, "status='SUCCESS'");
         $num_failed = $DB->count_records_select($table, "status='FAIL'");
 
-        $running = get_config('block/backadel', 'running');
+        $running = get_config('block_backadel', 'running');
 
         if (!$running) {
             $status_text = $_s('status_not_running');
