@@ -46,11 +46,9 @@ function backadel_delete_course($courseid) {
 // Generates the last bit of the backup .zip's filename based on the
 // pattern and roles that the admin chose in config.
 function generate_suffix($courseid) {
-    global $CFG;
-
     $suffix = '';
-    $field = $CFG->block_backadel_suffix;
-    $roleids = explode(',', $CFG->block_backadel_roles);
+    $field = get_config('block_backadel', 'suffix');
+    $roleids = explode(',', get_config('block_backadel', 'roles'));
     $context = get_context_instance(CONTEXT_COURSE, $courseid);
 
     if ($field != 'fullname') {
@@ -75,40 +73,34 @@ function generate_suffix($courseid) {
 }
 
 function backadel_backup_course($course) {
-    global $CFG, $DB;
+    global $CFG;
 
     require_once($CFG->dirroot . '/backup/util/includes/backup_includes.php');
     require_once($CFG->dirroot . '/backup/controller/backup_controller.class.php');
-    require_once($CFG->dirroot . '/backup/util/helper/backup_cron_helper.class.php');
 
-    $time = time();
+    $bc = new backup_controller(backup::TYPE_1COURSE, $course->id,
+        backup::FORMAT_MOODLE, backup::INTERACTIVE_NO, backup::MODE_AUTOMATED, 2);
 
-    if (!backup_cron_automated_helper::launch_automated_backup($course, $time, 2)) {
-        return false;
-    }
+    $outcome = $bc->execute_plan();
 
-    $params = array('component' => 'backup', 'filearea' => 'automated');
+    $results = $bc->get_results();
 
-    $old_file = reset($DB->get_records('files', $params, 'id DESC', '*', 0, 1));
-    $old_fileid = $old_file->id;
+    $file = $results['backup_destination'];
 
     $suffix = generate_suffix($course->id);
-    $filename = "backadel-$time-$course->shortname-$suffix.mbz";
 
-    $new_file = new stdClass();
-    $new_file->component = 'backadel';
-    $new_file->filearea = 'backups';
-    $new_file->contextid = get_context_instance(CONTEXT_SYSTEM)->id;
-    $new_file->filename = $filename;
+    $matchers = array('/\s/', '/\//');
 
-    $fs = get_file_storage();
+    $safe_short = preg_replace($matchers, '-', $course->shortname);
 
-    if (!$fs->create_file_from_storedfile($new_file, $old_fileid)) {
-        die();
-    }
+    $backadel_file = "backadel-{$safe_short}{$suffix}.zip";
 
-    $stored_file = $fs->get_file_instance($old_file);
-    $stored_file->delete();
+    $backadel_path = get_config('block_backadel', 'path');
+
+    $file->copy_content_to($CFG->dataroot . $backadel_path . $backadel_file);
+
+    $bc->destroy();
+    unset($bc);
 
     return true;
 }
