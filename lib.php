@@ -46,11 +46,9 @@ function backadel_delete_course($courseid) {
 // Generates the last bit of the backup .zip's filename based on the
 // pattern and roles that the admin chose in config.
 function generate_suffix($courseid) {
-    global $CFG;
-
     $suffix = '';
-    $field = $CFG->block_backadel_suffix;
-    $roleids = explode(',', $CFG->block_backadel_roles);
+    $field = get_config('block_backadel', 'suffix');
+    $roleids = explode(',', get_config('block_backadel', 'roles'));
     $context = get_context_instance(CONTEXT_COURSE, $courseid);
 
     if ($field != 'fullname') {
@@ -80,31 +78,8 @@ function backadel_backup_course($course) {
     require_once($CFG->dirroot . '/backup/util/includes/backup_includes.php');
     require_once($CFG->dirroot . '/backup/controller/backup_controller.class.php');
 
-    // $config = get_config('backup');
-
     $bc = new backup_controller(backup::TYPE_1COURSE, $course->id,
         backup::FORMAT_MOODLE, backup::INTERACTIVE_NO, backup::MODE_AUTOMATED, 2);
-
-    /*
-    $settings = array(
-        'users' => 'backup_auto_users',
-        'role_assignments' => 'backup_auto_users',
-        'user_files' => 'backup_auto_user_files',
-        'activities' => 'backup_auto_activities',
-        'blocks' => 'backup_auto_blocks',
-        'filters' => 'backup_auto_filters',
-        'comments' => 'backup_auto_comments',
-        'completion_information' => 'backup_auto_userscompletion',
-        'logs' => 'backup_auto_logs',
-        'histories' => 'backup_auto_histories'
-    );
-
-    foreach ($settings as $setting => $configsetting) {
-        if ($bc->get_plan()->setting_exists($setting)) {
-            $bc->get_plan()->get_setting($setting)->set_value($config->{$configsetting});
-        }
-    }
-     */
 
     $outcome = $bc->execute_plan();
 
@@ -112,9 +87,17 @@ function backadel_backup_course($course) {
 
     $file = $results['backup_destination'];
 
+    $suffix = generate_suffix($course->id);
+
+    $matchers = array('/\s/', '/\//');
+
+    $safe_short = preg_replace($matchers, '-', $course->shortname);
+
+    $backadel_file = "backadel-{$safe_short}_{$suffix}.zip";
+
     $backadel_path = get_config('block_backadel', 'path');
 
-    $file->copy_content_to($CFG->dataroot . $backadel_path . 'bd2.mbz');
+    $file->copy_content_to($CFG->dataroot . $backadel_path . $backadel_file);
 
     $bc->destroy();
     unset($bc);
