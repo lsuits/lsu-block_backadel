@@ -92,6 +92,9 @@ $string['path_error'] = 'Error: Please ensure that the path you provided is a ' 
 $string['sched_config'] = 'Access scheduled backup settings a
     (' . $string['pluginname'] . ') uses these settings)';
 $string['here'] = 'here';
+$string['config_path_not_exists'] = 'The path you have entered does not exists.';
+$string['config_path_not_writable'] = 'The path you have entered is not writable.';
+$string['config_path_surround'] = 'Surround the path with slashes.';
 
 // Strings for email
 $string['email_subject'] = 'Backup Job Completed';
