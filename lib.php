@@ -93,7 +93,7 @@ function backadel_backup_course($course) {
 
     $safe_short = preg_replace($matchers, '-', $course->shortname);
 
-    $backadel_file = "backadel-{$safe_short}_{$suffix}.zip";
+    $backadel_file = "backadel-{$safe_short}{$suffix}.zip";
 
     $backadel_path = get_config('block_backadel', 'path');
 
