@@ -30,6 +30,6 @@ $PAGE->requires->js('/blocks/backadel/js/index.js');
 echo $OUTPUT->header();
 echo $OUTPUT->heading($header);
 
-quick_render('index.tpl', array(), 'block_backadel');
+quick_template::render('index.tpl', array(), 'block_backadel');
 
 echo $OUTPUT->footer();
