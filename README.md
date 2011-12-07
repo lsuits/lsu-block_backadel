@@ -11,7 +11,7 @@ This is the Backup and Delete block for Moodle 2.x.
 * Failure cue can be automatically restarted.
 * Emails instructors when the backup job is comlpete.
 * Integrates with LSU's [Simplified Restore][simple_restore_github] plugin for seamless end-of semester backups and maximum course re-use.
-* Easily re-use course backups across mutliple systems with [Simplified Restore][simple_restore_github] for a perfect ent-to-end course archiving and re-use system.
+* Easily re-use course backups across mutliple systems with [Backup and Delete][backadel_github] and [Simplified Restore][simple_restore_github] for a perfect ent-to-end course archiving and re-use system.
 
 ##Requirements
 1. Download [Quick Template][quick_template].
