@@ -31,7 +31,7 @@ Contributions of any form are welcome. Github pull requests are preferred.
 File any bugs, improvements, or feature requiests in our [issue tracker][issues].
 
 ## License
-Simplified Restore adopts the same license that Moodle does.
+Backup and Delete adopts the same license that Moodle does.
 
 [simple_restore_github]: https://github.com/lsuits/simple_restore
 [backadel_github]: https://github.com/lsuits/backadel
