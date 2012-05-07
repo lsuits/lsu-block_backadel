@@ -1,8 +1,6 @@
 <?php
 
 require_once('../../config.php');
-require_once($CFG->libdir . '/quick_template.php');
-
 require_once('lib.php');
 
 $_s = function($key) { return get_string($key, 'block_backadel'); };
