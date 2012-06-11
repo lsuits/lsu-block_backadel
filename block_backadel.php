@@ -90,10 +90,12 @@ class block_backadel extends block_list {
         $icons = array();
         $items = array();
 
-        $icons[] = $OUTPUT->pix_icon('i/backup', '');
-        $icons[] = $OUTPUT->pix_icon('i/cross_red_big', '');
-        $icons[] = $OUTPUT->pix_icon('i/risk_xss', '');
-        $icons[] = $OUTPUT->pix_icon('i/admin', '');
+        $params = array('class' => 'icon');
+
+        $icons[] = $OUTPUT->pix_icon('i/backup', '', 'moodle', $params);
+        $icons[] = $OUTPUT->pix_icon('i/cross_red_big', '', 'moodle', $params);
+        $icons[] = $OUTPUT->pix_icon('i/risk_xss', '', 'moodle', $params);
+        $icons[] = $OUTPUT->pix_icon('i/admin', '', 'moodle', $params);
 
         $items[] = $this->build_link('index');
         $items[] = $this->build_link('delete') . "($num_pending)";
