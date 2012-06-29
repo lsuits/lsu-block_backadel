@@ -36,6 +36,11 @@ $string['upload_a_file'] = 'Upload A File';
 $string['upload'] = 'Upload';
 $string['cancel'] = 'Cancel';
 $string['delete_queries_link'] = 'Select Saved Queries for Deletion';
+$string['course_id'] = 'Course ID #';
+$string['is'] = 'is';
+$string['is_not'] = 'is not';
+$string['contains'] = 'contains';
+$string['does_not_contain'] = 'does not contain';
 
 // Strings for backup.php
 $string['backup'] = 'Select Backup Courses';

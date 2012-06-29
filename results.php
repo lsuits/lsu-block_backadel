@@ -66,17 +66,17 @@ foreach ($clean_data as $key => $value) {
 }
 
 $criteria = array(
-    'Shortname' => 'co.shortname',
-    'Fullname' => 'co.fullname',
-    'Course Id #' => 'co.idnumber',
-    'Category' => 'cat.name'
+    get_string('shortname') => 'co.shortname',
+    get_string('fullname') => 'co.fullname',
+    $_s('course_id') => 'co.idnumber',
+    get_string('category') => 'cat.name'
 );
 
 $operators = array(
-    'is' => 'IN',
-    'is not' => 'NOT IN',
-    'contains' => 'LIKE',
-    'does not contain' => 'NOT LIKE'
+    $_s('is') => 'IN',
+    $_s('is_not') => 'NOT IN',
+    $_s('contains') => 'LIKE',
+    $_s('does_not_contain') => 'NOT LIKE'
 );
 
 $constraints = array();
