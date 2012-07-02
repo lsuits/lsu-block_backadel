@@ -24,7 +24,7 @@ get_search_terms = (n) -> $("div[class^='c_#{ n }_search_term_']")
         <select name = 'c#{ n }_criteria'>
           <option>Shortname</option>
           <option>Fullname</option>
-          <option>Course Id #</option>
+          <option>Course ID #</option>
           <option>Category</option>
         </select>
         <select name = 'c#{ n }_operator'>

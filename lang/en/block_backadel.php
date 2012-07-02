@@ -41,6 +41,9 @@ $string['is'] = 'is';
 $string['is_not'] = 'is not';
 $string['contains'] = 'contains';
 $string['does_not_contain'] = 'does not contain';
+$string['name_missing'] = 'Please select a name for this query';
+$string['term_missing'] = 'Please select at least one search term for this constraint';
+$string['search_missing'] = 'Please select a saved search';
 
 // Strings for backup.php
 $string['backup'] = 'Select Backup Courses';
