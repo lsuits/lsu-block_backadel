@@ -13,11 +13,6 @@ This is the Backup and Delete block for Moodle 2.x.
 * Integrates with LSU's [Simplified Restore][simple_restore_github] plugin for seamless end-of semester backups and maximum course re-use.
 * Easily re-use course backups across mutliple systems with [Backup and Delete][backadel_github] and [Simplified Restore][simple_restore_github] for a perfect end-to-end course archiving and re-use system.
 
-##Requirements
-1. Download [Quick Template][quick_template].
-1. Smarty3 must be installed in your /lib/smarty3 folder.
-1. LSU's Quick Template (quicktemplate.php) must be installed in /lib/.
-
 ##Download
 Visit [Backup and Delete's Github page][backadel_github] to either download a package or clone the git repository.
 
@@ -37,4 +32,3 @@ Backup and Delete adopts the same license that Moodle does.
 [backadel_github]: https://github.com/lsuits/backadel
 [block_doc]: http://docs.moodle.org/20/en/Installing_contributed_modules_or_plugins#Block_installation
 [issues]: https://github.com/lsuits/backadel/issues
-[quick_template]: https://github.com/lsuits/quick_template
