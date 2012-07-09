@@ -28,7 +28,7 @@ $PAGE->set_url('/blocks/backadel/backup.php');
 echo $OUTPUT->header();
 echo $OUTPUT->heading($header);
 
-$backup_ids = required_param('backup', PARAM_INT);
+$backup_ids = required_param_array('backup', PARAM_INT);
 
 $current_ids = $DB->get_fieldset_select('block_backadel_statuses', 'coursesid', '');
 
