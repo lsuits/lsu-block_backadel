@@ -36,6 +36,14 @@ $string['upload_a_file'] = 'Upload A File';
 $string['upload'] = 'Upload';
 $string['cancel'] = 'Cancel';
 $string['delete_queries_link'] = 'Select Saved Queries for Deletion';
+$string['course_id'] = 'Course ID #';
+$string['is'] = 'is';
+$string['is_not'] = 'is not';
+$string['contains'] = 'contains';
+$string['does_not_contain'] = 'does not contain';
+$string['name_missing'] = 'Please select a name for this query';
+$string['term_missing'] = 'Please select at least one search term for this constraint';
+$string['search_missing'] = 'Please select a saved search';
 
 // Strings for backup.php
 $string['backup'] = 'Select Backup Courses';
@@ -101,4 +109,6 @@ $string['email_subject'] = 'Backup Job Completed';
 $string['email_from'] = 'noreply@lsu.edu';
 $string['email_body']  = "The Backup And Delete tool has completed the jobs in it's queue.";
 
+// Strings for event handlers
+$string['semester_backups'] = 'Semester Backups';
 ?>
