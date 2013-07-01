@@ -97,8 +97,8 @@ $string['config_size_limit'] = 'Size limit before warning';
 $string['config_size_limit_desc'] = 'In megabytes';
 $string['path_error'] = 'Error: Please ensure that the path you provided is a ' .
     'writable directory';
-$string['sched_config'] = 'Access scheduled backup settings a
-    (' . $string['pluginname'] . ') uses these settings)';
+$string['sched_config'] = 'Access scheduled backup settings as
+    (' . $string['pluginname'] . ') uses these settings.';
 $string['here'] = 'here';
 $string['config_path_not_exists'] = 'The path you have entered does not exists.';
 $string['config_path_not_writable'] = 'The path you have entered is not writable.';
@@ -111,4 +111,7 @@ $string['email_body']  = "The Backup And Delete tool has completed the jobs in i
 
 // Strings for event handlers
 $string['semester_backups'] = 'Semester Backups';
+
+//capabilities
+$string['block/backadel:addinstance'] = 'Add '.$string['pluginname'].' block.'
 ?>

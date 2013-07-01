@@ -11,10 +11,14 @@ class block_backadel extends block_list {
     function applicable_formats() {
         return array('site' => true, 'my' => false, 'course' => false);
     }
+    
+    function has_config(){
+        return true;
+    }
 
     function cron() {
         global $DB, $CFG;
-
+        mtrace('begin cron for BACKADEL!!!!!!!!!!!!!!!!!!!1');
         $_s = function($key, $a=NULL) {
             return get_string($key, 'block_backadel', $a);
         };
