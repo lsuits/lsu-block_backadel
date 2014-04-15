@@ -103,6 +103,8 @@ $string['here'] = 'here';
 $string['config_path_not_exists'] = 'The path you have entered does not exists.';
 $string['config_path_not_writable'] = 'The path you have entered is not writable.';
 $string['config_path_surround'] = 'Surround the path with slashes.';
+$string['bifurcate']      = "Bifurcate Backups";
+$string['bifurcate_desc'] = "Checking yes will create two backups for each course, one according to the automated backup settings, and another according to the general backup settings";
 
 // Strings for email
 $string['email_subject'] = 'Backup Job Completed';

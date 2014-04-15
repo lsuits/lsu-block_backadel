@@ -18,7 +18,7 @@ class block_backadel extends block_list {
 
     function cron() {
         global $DB, $CFG;
-        mtrace('begin cron for BACKADEL!!!!!!!!!!!!!!!!!!!1');
+        mtrace('begin cron for BACKADEL');
         $_s = function($key, $a=NULL) {
             return get_string($key, 'block_backadel', $a);
         };
@@ -49,6 +49,13 @@ class block_backadel extends block_list {
             if (!backadel_backup_course($course)) {
                 $error = true;
                 $error_log .= $_s('cron_backup_error', $course->shortname) . "\n";
+            }
+
+            if(get_config('block_backadel', 'bifurcate')){
+                if (!backadel_backup_course($course, true)) {
+                    $error = true;
+                    $error_log .= $_s('cron_backup_error', $course->shortname) . "\n";
+                }
             }
 
             $b->status = $error ? 'FAIL' : 'SUCCESS';

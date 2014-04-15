@@ -21,4 +21,5 @@ if ($ADMIN->fulltree) {
     $settings->add(new admin_setting_configtext('block_backadel/size_limit', $_s('config_size_limit'), $_s('config_size_limit_desc'), ''));
     $settings->add(new admin_setting_pickroles('block_backadel/roles', $_s('config_roles'), $_s('config_roles_desc'), array()));
     $settings->add(new admin_setting_heading('block_backadel/sched_options', '', $schedule_link));
+    $settings->add(new admin_setting_configcheckbox('block_backadel/bifurcate', $_s('bifurcate'), $_s('bifurcate_desc'), 0));
 }

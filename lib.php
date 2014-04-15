@@ -72,28 +72,36 @@ function generate_suffix($courseid) {
     return $suffix;
 }
 
-function backadel_backup_course($course) {
+function backadel_backup_course($course, $bifurcate = false) {
     global $CFG;
 
     require_once($CFG->dirroot . '/backup/util/includes/backup_includes.php');
     require_once($CFG->dirroot . '/backup/controller/backup_controller.class.php');
-
-    $bc = new backup_controller(backup::TYPE_1COURSE, $course->id,
-        backup::FORMAT_MOODLE, backup::INTERACTIVE_NO, backup::MODE_AUTOMATED, 2);
-
-    $outcome = $bc->execute_plan();
-
-    $results = $bc->get_results();
-
-    $file = $results['backup_destination'];
 
     $suffix = generate_suffix($course->id);
 
     $matchers = array('/\s/', '/\//');
 
     $safe_short = preg_replace($matchers, '-', $course->shortname);
+    
+    if($bifurcate){
+        $mode = backup::MODE_AUTOMATED;
+        $prefix = "backadel-";
+    }else{
+        $mode = backup::MODE_GENERAL;
+        $prefix = "backadel-nodata-";
+    }
+    
+    $backadel_file = "{$prefix}{$safe_short}{$suffix}.zip";
+    
+    $bc = new backup_controller(backup::TYPE_1COURSE, $course->id,
+        backup::FORMAT_MOODLE, backup::INTERACTIVE_NO, $mode, 2);
 
-    $backadel_file = "backadel-{$safe_short}{$suffix}.zip";
+    $outcome = $bc->execute_plan();
+
+    $results = $bc->get_results();
+
+    $file = $results['backup_destination'];
 
     $backadel_path = get_config('block_backadel', 'path');
 
