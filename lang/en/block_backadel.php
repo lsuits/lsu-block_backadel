@@ -113,5 +113,4 @@ $string['email_body']  = "The Backup And Delete tool has completed the jobs in i
 $string['semester_backups'] = 'Semester Backups';
 
 //capabilities
-$string['block/backadel:addinstance'] = 'Add '.$string['pluginname'].' block.'
-?>
+$string['backadel:addinstance'] = 'Add '.$string['pluginname'].' block.';
