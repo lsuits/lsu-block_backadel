@@ -49,8 +49,8 @@ function generate_suffix($courseid) {
     $suffix = '';
     $field = get_config('block_backadel', 'suffix');
     $roleids = explode(',', get_config('block_backadel', 'roles'));
-    $context = get_context_instance(CONTEXT_COURSE, $courseid);
-
+    //$context = get_context_instance(CONTEXT_COURSE, $courseid);
+    $context = context_course::instance($courseid);
     if ($field != 'fullname') {
         foreach ($roleids as $r) {
             if ($users = get_role_users($r, $context, false, 'u.' . $field)) {
