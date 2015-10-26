@@ -17,8 +17,8 @@ if (!is_siteadmin($USER->id)) {
 $blockname = $_s('pluginname');
 $header = $_s('delete_header');
 
-$context = get_context_instance(CONTEXT_SYSTEM);
-
+//$context = get_context_instance(CONTEXT_SYSTEM);
+$context = context_system::instance();
 $PAGE->set_context($context);
 
 $PAGE->navbar->add($header);
@@ -31,13 +31,19 @@ $PAGE->requires->js('/blocks/backadel/js/toggle.js');
 
 echo $OUTPUT->header();
 echo $OUTPUT->heading($header);
+if(isset($_POST['delete'])){
+    $delete_ids = $_POST['delete'];
+}
+else{
+    $delete_ids = null;
+}
 
-$delete_ids = optional_param('delete', null, PARAM_CLEAN);
 
 if ($delete_ids) {
     $to_delete = array();
 
     foreach ($delete_ids as $id) {
+        $id = clean_param($id, PARAM_INT);
         $fullname = $DB->get_field('course', 'fullname', array('id' => $id));
 
         if (backadel_delete_course($id)) {

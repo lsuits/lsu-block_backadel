@@ -14,8 +14,8 @@ if (!is_siteadmin($USER->id)) {
 $blockname = $_s('pluginname');
 $header = $_s('build_search');
 
-$context = get_context_instance(CONTEXT_SYSTEM);
-
+//$context = get_context_instance(CONTEXT_SYSTEM);
+$context = context_system::instance();
 $PAGE->set_context($context);
 
 $PAGE->navbar->add($header);
