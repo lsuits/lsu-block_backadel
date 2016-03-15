@@ -1,5 +1,5 @@
 <?php
 
-$plugin->version = 2013070115;
+$plugin->version = 2016031510;
 $plugin->cron = 60 * 60;
-$plugin->component = 'block';
+$plugin->component = 'block_backadel';
