@@ -1,6 +1,7 @@
 <?php
 
 require_once($CFG->dirroot . '/blocks/backadel/lib.php');
+require_once($CFG->dirroot . '/blocks/moodleblock.class.php');
 
 class block_backadel extends block_list {
 

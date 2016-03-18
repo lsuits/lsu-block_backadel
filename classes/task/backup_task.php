@@ -28,7 +28,8 @@ namespace block_backadel\task;
 /**
  * A scheduled task class for Backing up courses using the LSU Backadel Block.
  */
-require_once 'block_backadel.php';
+//require_once 'block_backadel.php';
+require_once($CFG->dirroot . '/blocks/backadel/block_backadel.php');
 
 
 class backup_task extends \core\task\scheduled_task {
@@ -50,16 +51,6 @@ class backup_task extends \core\task\scheduled_task {
         // DWE - MAYBE PUT CRON FUNCTION CALL HERE?
         $block_backadel = new block_backadel();
         $block_backadel->cron();
-        
-        
-        echo "I am executing the backup task";
-        
-        
-        // This code is from CAS plugin 
-        //if (is_enabled_auth('cas')) {
-        //    $auth = get_auth_plugin('cas');
-        //    $auth->sync_users(true);
-        //}
     }
 
 }
