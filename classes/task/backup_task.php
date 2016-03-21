@@ -50,7 +50,7 @@ class backup_task extends \core\task\scheduled_task {
         global $CFG;
         // DWE - MAYBE PUT CRON FUNCTION CALL HERE?
         $block_backadel = new block_backadel();
-        $block_backadel->cron();
+        $block_backadel->begin_backup_task();
     }
 
 }

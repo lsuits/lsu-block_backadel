@@ -17,7 +17,7 @@ class block_backadel extends block_list {
         return true;
     }
 
-    function cron() {
+    function begin_backup_task() {
         global $DB, $CFG;
         mtrace('begin cron for BACKADEL!!!!!!!!!!!!!!!!!!!1');
         $_s = function($key, $a=NULL) {
@@ -40,7 +40,7 @@ class block_backadel extends block_list {
         $error = false;
         $error_log = '';
 
-        set_config('running', time(), 'block_backadel');
+        set_config('running', '', 'block_backadel');
 
         foreach ($backups as $b) {
             $course = $DB->get_record('course', array('id' => $b->coursesid));
