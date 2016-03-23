@@ -3,6 +3,7 @@
 require_once($CFG->dirroot . '/blocks/backadel/lib.php');
 require_once($CFG->dirroot . '/blocks/moodleblock.class.php');
 
+
 class block_backadel extends block_list {
 
     function init() {
@@ -40,7 +41,7 @@ class block_backadel extends block_list {
         $error = false;
         $error_log = '';
 
-        set_config('running', '', 'block_backadel');
+        set_config('running', time(), 'block_backadel');
 
         foreach ($backups as $b) {
             $course = $DB->get_record('course', array('id' => $b->coursesid));
