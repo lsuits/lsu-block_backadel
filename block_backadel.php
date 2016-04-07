@@ -18,52 +18,6 @@ class block_backadel extends block_list {
         return true;
     }
 
-    function begin_backup_task() {
-        global $DB, $CFG;
-        mtrace('begin cron for BACKADEL!!!!!!!!!!!!!!!!!!!1');
-        $_s = function($key, $a=NULL) {
-            return get_string($key, 'block_backadel', $a);
-        };
-
-        $running = get_config('block_backadel', 'running');
-
-        if ($running) {
-            $minutes_run = round((time() - $running) / 60);
-            echo "\n" . $_s('cron_already_running', $minutes_run) . "\n";
-            return;
-        }
-
-        $params = array('status' => 'BACKUP');
-        if (!$backups = $DB->get_records('block_backadel_statuses', $params)) {
-            return true;
-        }
-
-        $error = false;
-        $error_log = '';
-
-        set_config('running', time(), 'block_backadel');
-
-        foreach ($backups as $b) {
-            $course = $DB->get_record('course', array('id' => $b->coursesid));
-
-            echo "\n" . $_s('backing_up') . ' ' . $course->shortname . "\n";
-
-            if (!backadel_backup_course($course)) {
-                $error = true;
-                $error_log .= $_s('cron_backup_error', $course->shortname) . "\n";
-            }
-
-            $b->status = $error ? 'FAIL' : 'SUCCESS';
-            $DB->update_record('block_backadel_statuses', $b);
-        }
-
-        set_config('running', '', 'block_backadel');
-
-        backadel_email_admins($error_log);
-
-        return true;
-    }
-
     function get_content() {
         global $DB, $CFG, $USER, $OUTPUT;
 
