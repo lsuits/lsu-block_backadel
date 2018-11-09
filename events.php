@@ -1,77 +1,91 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * Backadel events.
+ *
+ * @package    block_backadel
+ * @copyright  2008 onwards - Louisiana State University, David Elliott, Robert Russo, Chad Mazilly <delliott@lsu.edu>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+defined('MOODLE_INTERNAL') || die();
 
 abstract class backadel_event_handler {
+    // Replaces shortname spaces with dashes.
     public static function backadel_shortname($shortname) {
         if (preg_match('/\s/', $shortname)) {
             $matchers = array('/\s/', '/\//');
-
             return preg_replace($matchers, '-', $shortname);
         }
-
         return $shortname;
     }
 
+    // Build search criteria based on the configured suffix.
     public static function backadel_criterion($course) {
         global $USER;
-
         $crit = get_config('block_backadel', 'suffix');
-
         if (empty($crit)) {
             return "";
         }
-
         $search = $crit == 'username' ? '_' . $USER->username : $course->{$crit};
         return "{$search}[_\.]";
     }
 
+    // Build the list of courses to backup based on the search.
     public static function backadel_backups($search) {
         global $CFG;
-
-        $backadel_path = get_config('block_backadel', 'path');
-
-        if (empty($backadel_path)) {
+        $backadelpath = get_config('block_backadel', 'path');
+        if (empty($backadelpath)) {
             return array();
         }
-
-        $backadel_path = "$CFG->dataroot$backadel_path";
-
-        $by_search = function ($file) use ($search) {
+        $backadelpath = "$CFG->dataroot$backadelpath";
+        $bysearch = function ($file) use ($search) {
             return preg_match("/{$search}/i", $file);
         };
 
-        $to_backup = function ($file) use ($backadel_path) {
+        $tobackup = function ($file) use ($backadelpath) {
             $backadel = new stdClass;
             $backadel->id = $file;
             $backadel->filename = $file;
-            $backadel->filesize = filesize($backadel_path . $file);
-            $backadel->timemodified = filemtime($backadel_path . $file);
+            $backadel->filesize = filesize($backadelpath . $file);
+            $backadel->timemodified = filemtime($backadelpath . $file);
 
             return $backadel;
         };
-
-        $potentials = array_filter(scandir($backadel_path), $by_search);
-
-        return array_map($to_backup, $potentials);
+        $potentials = array_filter(scandir($backadelpath), $bysearch);
+        return array_map($tobackup, $potentials);
     }
 
+    // Copy the file to the backup location.
     public static function selected_backadel($data) {
         global $CFG;
+        $backadelpath = get_config('block_backadel', 'path');
+        $realpath = $CFG->dataroot . $backadelpath . $data->fileid;
 
-        $backadel_path = get_config('block_backadel', 'path');
-
-        $real_path = $CFG->dataroot . $backadel_path . $data->fileid;
-
-        if (!file_exists($real_path)) {
+        if (!file_exists($realpath)) {
             return true;
         }
 
-        copy($real_path, $data->to_path);
-
+        copy($realpath, $data->to_path);
         $data->filename = $data->fileid;
-
         return true;
     }
 
+    // Get the list of semester backups.
     public static function backup_list($data) {
         global $DB, $OUTPUT;
 
@@ -99,7 +113,6 @@ abstract class backadel_event_handler {
         }
 
         $data->lists[] = $list;
-
         return true;
     }
 }

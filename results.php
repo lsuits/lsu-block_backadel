@@ -1,22 +1,38 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * @package    block_backadel
+ * @copyright  2008 onwards Louisiana State University
+ * @copyright  2008 onwards Chad Mazilly, Robert Russo, Jason Peak, Dave Elliott, Adam Zapletal, Philip Cali
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
 require_once('../../config.php');
 require_once('lib.php');
-
-$_s = function($key) { return get_string($key, 'block_backadel'); };
-$_m = function($key) { return get_string($key); };
-
 require_login();
 
 if (!is_siteadmin($USER->id)) {
     print_error('need_permission', 'block_backadel');
 }
 
-// Page Setup
-$blockname = $_s('pluginname');
-$header = $_s('search_results');
+// Page Setup.
+$blockname = get_string('pluginname', 'block_backadel');
+$header = get_string('search_results', 'block_backadel');
 
-//$context = get_context_instance(CONTEXT_SYSTEM);
 $context = context_system::instance();
 $PAGE->set_context($context);
 
@@ -31,36 +47,36 @@ $PAGE->requires->js('/blocks/backadel/js/toggle.js');
 echo $OUTPUT->header();
 echo $OUTPUT->heading($header);
 
-$clean_data = array();
+$cleandata = array();
 
 if (!$data = data_submitted()) {
     redirect(new moodle_url('/blocks/backadel/index.php'));
 }
 
 foreach ($data as $key => $value) {
-    $clean_data[$key] = clean_param($value, PARAM_CLEAN);
+    $cleandata[$key] = clean_param($value, PARAM_CLEAN);
 }
 
 $query = new stdClass;
 $query->userid = $USER->id;
-$query->type = $clean_data['type'] == 'ALL' ? 'AND' : 'OR';
+$query->type = $cleandata['type'] == 'ALL' ? 'AND' : 'OR';
 $query->created_at = time();
 
-$constraint_data = array();
+$constraintdata = array();
 
-foreach ($clean_data as $key => $value) {
+foreach ($cleandata as $key => $value) {
     if ($key[0] == 'c' && is_numeric($key[1])) {
         $i = $key[1];
 
-        if (empty($constraint_data[$i]) || !is_array($constraint_data[$i])) {
-            $constraint_data[$i] = array();
-            $constraint_data[$i]['search_terms'] = '';
+        if (empty($constraintdata[$i]) || !is_array($constraintdata[$i])) {
+            $constraintdata[$i] = array();
+            $constraintdata[$i]['search_terms'] = '';
         }
 
         if (substr($key, 3, 11) == 'search_term') {
-            $constraint_data[$i]['search_terms'] .= '|' . $value;
+            $constraintdata[$i]['search_terms'] .= '|' . $value;
         } else {
-            $constraint_data[$i][substr($key, 3)] = $value;
+            $constraintdata[$i][substr($key, 3)] = $value;
         }
     }
 }
@@ -68,20 +84,20 @@ foreach ($clean_data as $key => $value) {
 $criteria = array(
     get_string('shortname') => 'co.shortname',
     get_string('fullname') => 'co.fullname',
-    $_s('course_id') => 'co.idnumber',
+    get_string('course_id', 'block_backadel') => 'co.idnumber',
     get_string('category') => 'cat.name'
 );
 
 $operators = array(
-    $_s('is') => 'IN',
-    $_s('is_not') => 'NOT IN',
-    $_s('contains') => 'LIKE',
-    $_s('does_not_contain') => 'NOT LIKE'
+    get_string('is', 'block_backadel') => 'IN',
+    get_string('is_not', 'block_backadel') => 'NOT IN',
+    get_string('contains', 'block_backadel') => 'LIKE',
+    get_string('does_not_contain', 'block_backadel') => 'NOT LIKE'
 );
 
 $constraints = array();
 
-foreach ($constraint_data as $c) {
+foreach ($constraintdata as $c) {
     $c['criteria'] = $criteria[$c['criteria']];
     $c['operator'] = $operators[$c['operator']];
     $c['search_terms'] = substr($c['search_terms'], 1);
@@ -94,10 +110,10 @@ $results = $DB->get_records_sql(build_sql_from_search($query, $constraints));
 $table = new html_table();
 
 $table->head = array(
-    $_m('shortname'),
-    $_m('fullname'),
-    $_m('category'),
-    $_m('backup')
+    get_string('shortname'),
+    get_string('fullname'),
+    get_string('category'),
+    get_string('backup')
 );
 
 $table->data = array();
@@ -106,17 +122,17 @@ foreach ($results as $r) {
     $url = new moodle_url('/course/view.php', array('id' => $r->id));
     $link = html_writer::link($url, $r->shortname);
 
-    $backup_checkbox = html_writer::checkbox('backup[]', $r->id);
+    $backupcheckbox = html_writer::checkbox('backup[]', $r->id);
 
-    $row_data = array($link, $r->fullname, $r->category, $backup_checkbox);
+    $rowdata = array($link, $r->fullname, $r->category, $backupcheckbox);
 
-    $table->data[] = $row_data;
+    $table->data[] = $rowdata;
 }
 
 echo '<form action = "backup.php" method = "POST">';
 echo html_writer::table($table);
-echo html_writer::link('#', $_s('toggle_all'), array('class' => 'backadel toggle_link'));
-echo '    <input type = "submit" value = "' . $_s('backup_button') . '"/>';
+echo html_writer::link('#', get_string('toggle_all', 'block_backadel'), array('class' => 'backadel toggle_link'));
+echo '    <input type = "submit" value = "' . get_string('backup_button', 'block_backadel') . '"/>';
 echo '</form>';
 
 echo $OUTPUT->footer();

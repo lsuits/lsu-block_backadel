@@ -1,6 +1,29 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-// Strings for block
+/**
+ * @package    block_backadel
+ * @copyright  2008 onwards Louisiana State University
+ * @copyright  2008 onwards Chad Mazilly, Robert Russo, Jason Peak, Dave Elliott, Adam Zapletal, Philip Cali
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+defined('MOODLE_INTERNAL') || die();
+
+// Strings for block.
 $string['backup_and_delete'] = 'Backup And Delete';
 $string['block_index'] = 'Backup';
 $string['block_delete'] = 'Delete';
@@ -17,13 +40,13 @@ $string['cron_already_running'] = 'Skipping backadel, it has already been ' .
     'running for {$a} minute(s)';
 $string['backuptask'] = 'Backup job';
 
-// Stings shared by pages
+// Stings shared by pages.
 $string['pluginname'] = 'Backup And Delete';
 $string['blockname'] = 'Backup And Delete';
 $string['need_permission'] = 'You do not have permission to view this page';
 $string['toggle_all'] = 'Select All/None';
 
-// Strings for index.php
+// Strings for index.php.
 $string['build_search'] = 'Build Search';
 $string['saved_searches'] = 'Saved Searches';
 $string['no_searches'] = 'There are no saved searches at this time';
@@ -46,16 +69,16 @@ $string['name_missing'] = 'Please select a name for this query';
 $string['term_missing'] = 'Please select at least one search term for this constraint';
 $string['search_missing'] = 'Please select a saved search';
 
-// Strings for backup.php
+// Strings for backup.php.
 $string['backup'] = 'Select Backup Courses';
 $string['backup_button'] = 'Backup Selected Courses';
 
-// Strings for results.php
+// Strings for results.php.
 $string['search_results'] = 'Search Results';
 $string['save_query'] = 'Save Query';
 $string['create_new_query'] = 'Create New Query';
 
-// Strings for delete.php
+// Strings for delete.php.
 $string['delete'] = 'Delete?';
 $string['delete_header'] = 'Completed Backups';
 $string['deleted'] = 'Successfully deleted {$a}';
@@ -63,14 +86,14 @@ $string['delete_error'] = ', but there may have been an error, please check';
 $string['none_completed'] = 'There are no completed backups at this time';
 $string['delete_button'] = 'Delete Selected Courses';
 
-// Strings for delete_queries.php
+// Strings for delete_queries.php.
 $string['delete_queries_header'] = 'Delete Saved Queries';
 $string['delete_queries_button'] = 'Delete Selected Queries';
 $string['delete_queries_success'] = '{$a} successful query deletion(s)';
 
-// Strings for send_job.php
+// Strings for send_job.php.
 $string['job_sent'] = 'Backup Job Sent';
-$string['job_sent_body'] = 'Your backup job will start during the next cron run. ' . 
+$string['job_sent_body'] = 'Your backup job will start during the next cron run. ' .
     'You will receive an email when all backups are complete.';
 $string['already_successful'] = ' was not scheduled for backup because was ' .
     'already successfully backed up but never deleted.';
@@ -79,14 +102,14 @@ $string['already_scheduled'] = ' was not scheduled for backup because it is ' .
 $string['already_failed'] = ' was not scheduled for backup because it is an ' .
     'unresolved failure. Please fix this.';
 
-// String for failed.php
+// String for failed.php.
 $string['failed_header'] = 'Failed Backups';
 $string['none_failed'] = 'There are no failed backups at this time';
 $string['failed_button'] = 'Reschedule Selected Backups';
 $string['failed'] = 'Failed?';
 $string['statuses_updated'] = 'Selected courses have been rescheduled for backup';
 
-// Strings for settings.php
+// Strings for settings.php.
 $string['config_path'] = 'Storage Path';
 $string['config_path_desc'] = 'Relative to {$a}, include the surrounding slashes.
     Ensure that this directory is created and writable.';
@@ -105,13 +128,13 @@ $string['config_path_not_exists'] = 'The path you have entered does not exists.'
 $string['config_path_not_writable'] = 'The path you have entered is not writable.';
 $string['config_path_surround'] = 'Surround the path with slashes.';
 
-// Strings for email
+// Strings for email.
 $string['email_subject'] = 'Backup Job Completed';
 $string['email_from'] = 'noreply@lsu.edu';
 $string['email_body']  = "The Backup And Delete tool has completed the jobs in it's queue.";
 
-// Strings for event handlers
+// Strings for event handlers.
 $string['semester_backups'] = 'Semester Backups';
 
-//capabilities
+// Capability strings.
 $string['backadel:addinstance'] = 'Add '.$string['pluginname'].' block.';

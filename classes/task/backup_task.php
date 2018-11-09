@@ -18,20 +18,15 @@
  * A scheduled task for Backadel.
  *
  * @package    block_backadel
- * @copyright  2016 Louisiana State University, David Elliott, Robert Russo, Chad Mazilly <delliott@lsu.edu>
+ * @copyright  2008 onwards - Louisiana State University, David Elliott, Robert Russo, Chad Mazilly <delliott@lsu.edu>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 namespace block_backadel\task;
-
-//use block_backadel;
-
-/**
- * A scheduled task class for Backing up courses using the LSU Backadel Block.
- */
-//require_once 'block_backadel.php';
+defined('MOODLE_INTERNAL') || die();
 require_once($CFG->dirroot . '/blocks/backadel/block_backadel.php');
 
-
+// A scheduled task class for Backing up courses using the LSU Backadel Block.
 class backup_task extends \core\task\scheduled_task {
 
     /**
@@ -53,48 +48,53 @@ class backup_task extends \core\task\scheduled_task {
 
 }
 
-    function begin_backup_task() {
-        global $DB, $CFG;
-        mtrace('begin cron for BACKADEL!!!!!!!!!!!!!!!!!!!1');
-        $_s = function($key, $a=NULL) {
-            return get_string($key, 'block_backadel', $a);
-        };
+/**
+ * Run the backup task itself.
+ */
+function begin_backup_task() {
+    global $DB, $CFG;
+    mtrace('Begin cron for Backup and Delete.');
+    $running = get_config('block_backadel', 'running');
 
-        $running = get_config('block_backadel', 'running');
-
-        if ($running) {
-            $minutes_run = round((time() - $running) / 60);
-            echo "\n" . $_s('cron_already_running', $minutes_run) . "\n";
+    // Check if the task is running, return the runtime, and exit.
+    if ($running) {
+        $minutesrun = round((time() - $running) / 60);
+        echo "\n" . get_string('cron_already_running', 'block_backadel', $minutesrun) . "\n";
             return;
-        }
+    }
 
-        $params = array('status' => 'BACKUP');
-        if (!$backups = $DB->get_records('block_backadel_statuses', $params)) {
-            return true;
-        }
-
-        $error = false;
-        $error_log = '';
-
-        set_config('running', time(), 'block_backadel');
-
-        foreach ($backups as $b) {
-            $course = $DB->get_record('course', array('id' => $b->coursesid));
-
-            echo "\n" . $_s('backing_up') . ' ' . $course->shortname . "\n";
-
-            if (!backadel_backup_course($course)) {
-                $error = true;
-                $error_log .= $_s('cron_backup_error', $course->shortname) . "\n";
-            }
-
-            $b->status = $error ? 'FAIL' : 'SUCCESS';
-            $DB->update_record('block_backadel_statuses', $b);
-        }
-
-        set_config('running', '', 'block_backadel');
-
-        backadel_email_admins($error_log);
-
+    // Only get the courses scheduled for backup!
+    $params = array('status' => 'BACKUP');
+    if (!$backups = $DB->get_records('block_backadel_statuses', $params)) {
         return true;
     }
+
+    $error = false;
+    $errorlog = '';
+
+    // Mark the task as running - this may no longer be necessary now that it's a task.
+    set_config('running', time(), 'block_backadel');
+
+    // Do the deed for each course and log the status.
+    foreach ($backups as $b) {
+        $course = $DB->get_record('course', array('id' => $b->coursesid));
+
+        echo "\n" . get_string('backing_up', 'block_backadel') . ' ' . $course->shortname . "\n";
+
+        if (!backadel_backup_course($course)) {
+            $error = true;
+            $errorlog .= get_string('cron_backup_error', 'block_backadel', $course->shortname) . "\n";
+        }
+
+        $b->status = $error ? 'FAIL' : 'SUCCESS';
+        $DB->update_record('block_backadel_statuses', $b);
+    }
+
+    // Clear the task run-status - this may no longer be necessary now that it's a task.
+    set_config('running', '', 'block_backadel');
+
+    // Email administrators the status of the task.
+    backadel_email_admins($errorlog);
+
+    return true;
+}

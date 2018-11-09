@@ -1,31 +1,54 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * @package    block_backadel
+ * @copyright  2008 onwards Louisiana State University
+ * @copyright  2008 onwards Chad Mazilly, Robert Russo, Jason Peak, Dave Elliott, Adam Zapletal, Philip Cali
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+defined('MOODLE_INTERNAL') || die();
 
 function build_sql_from_search($query, $constraints) {
     $sql = "SELECT co.id, co.fullname, co.shortname, co.idnumber, cat.name
         AS category FROM {course} co, {course_categories} cat WHERE
         co.category = cat.id AND (";
 
-    $constraint_sqls = array();
+    $constraintsqls = array();
 
     foreach ($constraints as $c) {
         if (in_array($c->operator, array('LIKE', 'NOT LIKE'))) {
-            // (NOT) LIKE
+            // Like or not like.
             $parts = array();
 
             foreach (explode('|', $c->search_terms) as $s) {
                 $parts[] = "$c->criteria $c->operator '%{$s}%'";
             }
 
-            $constraint_sqls[] = '(' . implode(' OR ', $parts) . ')';
+            $constraintsqls[] = '(' . implode(' OR ', $parts) . ')';
         } else {
-            // (NOT) IN
-            $in_str = str_replace('|', "', '", $c->search_terms);
+            // In or not in.
+            $instr = str_replace('|', "', '", $c->search_terms);
 
-            $constraint_sqls[] = "($c->criteria $c->operator ('$in_str'))";
+            $constraintsqls[] = "($c->criteria $c->operator ('$instr'))";
         }
     }
 
-    return $sql . implode(" $query->type ", $constraint_sqls) . ');';
+    return $sql . implode(" $query->type ", $constraintsqls) . ');';
 }
 
 function backadel_delete_course($courseid) {
@@ -49,12 +72,14 @@ function generate_suffix($courseid) {
     $suffix = '';
     $field = get_config('block_backadel', 'suffix');
     $roleids = explode(',', get_config('block_backadel', 'roles'));
-    //$context = get_context_instance(CONTEXT_COURSE, $courseid);
     $context = context_course::instance($courseid);
     if ($field != 'fullname') {
         foreach ($roleids as $r) {
-            if ($users = get_role_users($r, $context, false, 'u.' . $field)) {
+            if ($users = get_role_users($r, $context, false, '')) {
                 foreach ($users as $k => $v) {
+                    echo '$k: ' . $k . '<br />';
+		    echo '$v: ' . $v->$field . '<br />';
+                    die();
                     $suffix .= '_' . $k;
                 }
             }
@@ -91,13 +116,13 @@ function backadel_backup_course($course) {
 
     $matchers = array('/\s/', '/\//');
 
-    $safe_short = preg_replace($matchers, '-', $course->shortname);
+    $safeshort = preg_replace($matchers, '-', $course->shortname);
 
-    $backadel_file = "backadel-{$safe_short}{$suffix}.zip";
+    $backadelfile = "backadel-{$safeshort}{$suffix}.zip";
 
-    $backadel_path = get_config('block_backadel', 'path');
+    $backadelpath = get_config('block_backadel', 'path');
 
-    $file->copy_content_to($CFG->dataroot . $backadel_path . $backadel_file);
+    $file->copy_content_to($CFG->dataroot . $backadelpath . $backadelfile);
 
     $bc->destroy();
     unset($bc);
@@ -106,13 +131,11 @@ function backadel_backup_course($course) {
 }
 
 function backadel_email_admins($errors) {
-    $_s = function($key) { return get_string($key, 'block_backadel'); };
+    $dellink = new moodle_url('/blocks/backadel/delete.php');
 
-    $del_link = new moodle_url('/blocks/backadel/delete.php');
-
-    $subject = $_s('email_subject');
-    $from = $_s('email_from');
-    $messagetext = $errors . "\n\n" . $_s('email_body') . $del_link;
+    $subject = get_string('email_subject', 'block_backadel');
+    $from = get_string('email_from', 'block_backadel');
+    $messagetext = $errors . "\n\n" . get_string('email_body', 'block_backadel') . $dellink;
 
     foreach (get_admins() as $admin) {
         email_to_user($admin, $from, $subject, $messagetext);

@@ -36,7 +36,7 @@ get_search_terms = (n) -> $("div[class^='c_#{ n }_search_term_']")
         <span id = 'c#{ n }_search_term_0'>
           <input name = 'c#{ n }_search_term_0' type = 'text'/>
           <input id = 'c#{ n }_st_num' value = '1' type = 'hidden'/>
-          <img src = 'images/add.png' class = 'add_search_term'/>
+          <img src = 'images/add.svg' class = 'add_search_term icon'/>
         </span>
       </div>
     ")
@@ -49,7 +49,7 @@ get_search_terms = (n) -> $("div[class^='c_#{ n }_search_term_']")
         <div class = 'search_term_or'>OR</div>
         <div class = 'search_term_input'>
           <input name = 'c#{ n }_search_term_#{ st_num }' type = 'text'/>
-          <img src = 'images/delete.png' class = 'remove_search_term'/>
+          <img src = 'images/delete.svg' class = 'remove_search_term icon'/>
         </div>
       </div>
     </div>

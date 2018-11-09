@@ -1,7 +1,24 @@
+/*
+ This file is part of Moodle
 
-/**
- * @author Adam Zapletal/Robert Russo
- * @Louisana State University
+ Moodle is free software: you can redistribute it and or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ Moodle is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with Moodle.  If not, see <www.gnu.org>.
+
+**
+ * @package    block_backadel
+ * @copyright  2008 onwards Louisiana State University
+ * @copyright  2008 onwards Chad Mazilly, Robert Russo, Jason Peak, Dave Elliott, Adam Zapletal, Philip Cali
+ * @license    www.gnu.org GNU GPL v3 or later
  */
 
 /* body */
@@ -32,7 +49,7 @@ border: 1px solid #999999;
 #page-blocks-backadel-results.path-blocks-backadel form input[type="submit"] {
 display: block;
 float: right;
-margin: 0 10px 10px 0; 
+margin: 0 10px 10px 0;
 padding: 3px 10px;
 font-size: 13px;
 }
@@ -69,8 +86,6 @@ width: auto;
 /* the whole form */
 .path-blocks-backadel form {
 margin: 0 auto 40px auto;
-min-width: 600px;
-width: 70%;
 background-color: #ffffff;
 border: 1px solid #dddddd;
 }
@@ -299,7 +314,7 @@ div.backadel_table {
    -webkit-border-radius: 3px;
    -webkit-appearance: none;
    -moz-appearance: none;
-   margin: 0 0 10px 10px; 
+   margin: 0 0 10px 10px;
 }
 
 .path-blocks-backadel a.backadel.toggle_link:hover {
@@ -310,3 +325,12 @@ div.backadel_table {
    text-decoration: none;
 }
 
+.block_backadel div.icon {
+   float: left;
+   vertical-align: middle;
+}
+
+#page-blocks-backadel-index img.icon {
+   margin-left: .5rem;
+   margin-right: 0;
+}
