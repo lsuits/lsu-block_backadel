@@ -13,16 +13,15 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
  * @package    block_backadel
  * @copyright  2008 onwards Louisiana State University
  * @copyright  2008 onwards Chad Mazilly, Robert Russo, Jason Peak, Dave Elliott, Adam Zapletal, Philip Cali
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 defined('MOODLE_INTERNAL') || die();
 
+// The settings page.
 if ($ADMIN->fulltree) {
     require_once($CFG->dirroot. '/blocks/backadel/settingslib.php');
 
@@ -33,7 +32,8 @@ if ($ADMIN->fulltree) {
     );
 
     $schedurl = new moodle_url('/admin/settings.php?section=automated');
-    $schedulelink = html_writer::link($schedurl, get_string('sched_config', 'block_backadel'));
+    $schedulelink = html_writer::link($schedurl,
+        get_string('sched_config', 'block_backadel'));
 
     $settings->add(new backadel_path_setting('block_backadel/path',
         get_string('config_path', 'block_backadel'),

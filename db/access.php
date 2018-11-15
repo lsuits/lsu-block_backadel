@@ -15,17 +15,19 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Capabilities for Backadel.
+ * Definition of the grade_forecast_report class is defined
  *
  * @package    block_backadel
- * @copyright  2008 onwards - Louisiana State University, David Elliott, Robert Russo, Chad Mazilly <delliott@lsu.edu>
+ * @copyright  2016 Louisiana State University, Chad Mazilly, Robert Russo, Dave Elliott
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
+
 $capabilities = array(
     'block/backadel:addinstance' => array(
-        'riskbitmask' => RISK_DATALOSS,
+                'riskbitmask' => RISK_DATALOSS,
+
         'captype' => 'write',
         'contextlevel' => CONTEXT_MODULE,
         'archetypes' => array(
@@ -33,7 +35,7 @@ $capabilities = array(
             'teacher' => CAP_PREVENT,
             'admin' => CAP_ALLOW
         ),
+
         'clonepermissionsfrom' => 'moodle/site:manageblocks'
         ),
     );
-

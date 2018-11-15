@@ -13,14 +13,12 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
  * @package    block_backadel
  * @copyright  2008 onwards Louisiana State University
  * @copyright  2008 onwards Chad Mazilly, Robert Russo, Jason Peak, Dave Elliott, Adam Zapletal, Philip Cali
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 defined('MOODLE_INTERNAL') || die();
 
 // Strings for block.
@@ -136,5 +134,5 @@ $string['email_body']  = "The Backup And Delete tool has completed the jobs in i
 // Strings for event handlers.
 $string['semester_backups'] = 'Semester Backups';
 
-// Capability strings.
+// Capabilities.
 $string['backadel:addinstance'] = 'Add '.$string['pluginname'].' block.';

@@ -15,43 +15,53 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Backadel events.
+ * Definition of the grade_forecast_report class is defined
  *
  * @package    block_backadel
- * @copyright  2008 onwards - Louisiana State University, David Elliott, Robert Russo, Chad Mazilly <delliott@lsu.edu>
+ * @copyright  2016 Louisiana State University, Chad Mazilly, Robert Russo, Dave Elliott
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * Contains the event handler class for block_backadel.
+ *
+ * @package    block_backadel
+ * @copyright  2008 onwards Chad Mazilly, Robert Russo, Jason Peak, Dave Elliott, Adam Zapletal, Philip Cali
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 abstract class backadel_event_handler {
-    // Replaces shortname spaces with dashes.
     public static function backadel_shortname($shortname) {
         if (preg_match('/\s/', $shortname)) {
             $matchers = array('/\s/', '/\//');
+
             return preg_replace($matchers, '-', $shortname);
         }
+
         return $shortname;
     }
 
-    // Build search criteria based on the configured suffix.
     public static function backadel_criterion($course) {
         global $USER;
         $crit = get_config('block_backadel', 'suffix');
+
         if (empty($crit)) {
             return "";
         }
+
         $search = $crit == 'username' ? '_' . $USER->username : $course->{$crit};
         return "{$search}[_\.]";
     }
 
-    // Build the list of courses to backup based on the search.
     public static function backadel_backups($search) {
         global $CFG;
         $backadelpath = get_config('block_backadel', 'path');
+
         if (empty($backadelpath)) {
             return array();
         }
+
         $backadelpath = "$CFG->dataroot$backadelpath";
         $bysearch = function ($file) use ($search) {
             return preg_match("/{$search}/i", $file);
@@ -66,14 +76,16 @@ abstract class backadel_event_handler {
 
             return $backadel;
         };
+
         $potentials = array_filter(scandir($backadelpath), $bysearch);
         return array_map($tobackup, $potentials);
     }
 
-    // Copy the file to the backup location.
     public static function selected_backadel($data) {
         global $CFG;
+
         $backadelpath = get_config('block_backadel', 'path');
+
         $realpath = $CFG->dataroot . $backadelpath . $data->fileid;
 
         if (!file_exists($realpath)) {
@@ -85,7 +97,6 @@ abstract class backadel_event_handler {
         return true;
     }
 
-    // Get the list of semester backups.
     public static function backup_list($data) {
         global $DB, $OUTPUT;
 

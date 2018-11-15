@@ -18,7 +18,7 @@
  * Backadel index page.
  *
  * @package    block_backadel
- * @copyright  2008 onwards - Louisiana State University, David Elliott, Robert Russo, Chad Mazilly <delliott@lsu.edu>
+ * @copyright  2008 onwards - Louisiana State University, Chad Mazilly, Robert Russo, Dave Elliott
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -30,11 +30,11 @@ if (!is_siteadmin($USER->id)) {
     print_error('need_permission', 'block_backadel');
 }
 
-// Page Setup.
+// Begin page Setup.
 $blockname = get_string('pluginname', 'block_backadel');
 $header = get_string('build_search', 'block_backadel');
 
-// Context and page setup.
+// Context setup.
 $context = context_system::instance();
 $PAGE->set_context($context);
 
@@ -49,12 +49,11 @@ $PAGE->requires->js('/blocks/backadel/js/index.js');
 // Output the page header.
 echo $OUTPUT->header();
 echo $OUTPUT->heading($header);
-
 echo html_writer::tag('div', '', array(
     'id' => 'results_error', 'class' => 'backadel_error'
 ));
 
-// Enumerate the options.
+// Enumerate the initial options.
 $options = array('ALL', 'ANY');
 
 // Set up the page controls.
@@ -68,28 +67,25 @@ $controls = html_writer::tag('div',
         array('src' => 'images/add.svg', 'class' => 'add_constraint icon')),
     array('id' => 'anyall_row'));
 
-// Enumerate the options.
+// Grab more options.
 $options = array(
     get_string('shortname'), get_string('fullname'),
     get_string('course_id', 'block_backadel'), get_string('category')
 );
 
-// Combine them.
+// Combine the options.
 $options = array_combine($options, $options);
-
 $crit = html_writer::select($options, 'c0_criteria', '', null);
 
-// Where options.
+// Add some more options.
 $options = array(
     get_string('is', 'block_backadel'),
     get_string('is_not', 'block_backadel'),
     get_string('contains', 'block_backadel'),
-    get_string('does_not_contain', 'block_backadel')
-);
+    get_string('does_not_contain', 'block_backadel'));
 
 // Combine the options.
 $options = array_combine($options, $options);
-
 $op = html_writer::select($options, 'c0_operator', '', null);
 
 // Build the search UI.
@@ -113,12 +109,12 @@ $button = html_writer::tag('div',
     )), array('id' => 'button')
 );
 
-// Build the form container.
+// Set up the form container div.
 $formcontainer = html_writer::tag('div', $controls . $group . $button, array(
     'id' => 'form_container'
 ));
 
-// Build the form.
+// Output the form.
 echo html_writer::tag('form', $formcontainer, array(
     'id' => 'query', 'action' => 'results.php', 'method' => 'POST'
 ));

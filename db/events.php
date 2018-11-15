@@ -15,17 +15,15 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Events for Backadel.
+ * Definition of the grade_forecast_report class is defined
  *
  * @package    block_backadel
- * @copyright  2008 onwards - Louisiana State University, David Elliott, Robert Russo, Chad Mazilly <delliott@lsu.edu>
+ * @copyright  2016 Louisiana State University, Chad Mazilly, Robert Russo, Dave Elliott
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-// V1 events that need to be changed or removed completely.
-// The LSU method of handling events is unsupported.
 $handlers = array(
     'simple_restore_backup_list' => array(
         'handlerfile' => '/blocks/backadel/events.php',
@@ -39,8 +37,6 @@ $handlers = array(
     )
 );
 
-// V1 events that need to be changed or removed completely.
-// // The LSU method of handling events is unsupported.
 $observers = array(
     array(
         'eventname' => '\block_simple_restore\event\simple_restore_backup_list',
