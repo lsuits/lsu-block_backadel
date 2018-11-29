@@ -131,8 +131,5 @@ $string['email_subject'] = 'Backup Job Completed';
 $string['email_from'] = 'noreply@lsu.edu';
 $string['email_body']  = "The Backup And Delete tool has completed the jobs in it's queue.";
 
-// Strings for event handlers.
-$string['semester_backups'] = 'Semester Backups';
-
 // Capabilities.
 $string['backadel:addinstance'] = 'Add '.$string['pluginname'].' block.';
